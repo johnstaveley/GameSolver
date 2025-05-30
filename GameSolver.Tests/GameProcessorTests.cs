@@ -6,7 +6,7 @@ namespace GameSolver.Tests
     // Puzzles taken from the British Army challenge book 2019
 
     public class GameProcessorTests
-    {        
+    {
         [Test]
         public void FutoshikiBasic()
         {
@@ -80,6 +80,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku Easy - 3x3 subgrid",
                 FileName = "SudokuEasy.txt",
                 SubGridSize = new Tuple<int, int>(3, 3)
             };
@@ -112,6 +113,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku Extreme - 3x3 subgrid",
                 FileName = "SudokuExtreme.txt",
                 SubGridSize = new Tuple<int, int>(3, 3)
             };
@@ -206,6 +208,5 @@ namespace GameSolver.Tests
             // Assert
             Assert.That(result.First(), Is.EqualTo("746318592"));
         }
-
     }
 }

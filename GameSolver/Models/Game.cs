@@ -23,5 +23,6 @@
         /// Prohibit adjacent squares from summing to 5 or 10 unless explicitly allowed by the constraints.
         /// </summary>
         public bool ProhibitXV { get; set; } = false;
+        public string Description { get; set; } = "No description provided";
     }
 }
