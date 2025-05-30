@@ -4,7 +4,6 @@ using GameSolver.Services;
 namespace GameSolver.Tests
 {
     // Puzzles taken from the British Army challenge book 2019
-
     public class GameProcessorTests
     {
         [Test]
@@ -163,6 +162,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku - Adjacent squares either must add up to 10 or 5 or must not",
                 FileName = "SudokuXV.txt",
                 SubGridSize = new Tuple<int, int>(3, 3),
                 ProhibitXV = true
@@ -180,6 +180,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku - No adjacent squares are allowed to add up to 10 or 5",
                 FileName = "SudokuAntiXV.txt",
                 SubGridSize = new Tuple<int, int>(3, 3),
                 ProhibitXV = true
@@ -197,6 +198,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku - No adjacent squares are allowed to be consecutive numbers",
                 FileName = "SudokuNonConsec.txt",
                 SubGridSize = new Tuple<int, int>(3, 3),
                 IsNonConsecutive = true
