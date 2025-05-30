@@ -1,5 +1,6 @@
 ﻿using GameSolver.Models;
 using GameSolver.Services;
+using System.Text.RegularExpressions;
 
 namespace GameSolver.Tests
 {
@@ -209,6 +210,33 @@ namespace GameSolver.Tests
 
             // Assert
             Assert.That(result.First(), Is.EqualTo("746318592"));
+        }
+        [Test]
+        public void SudokuThermometer()
+        {
+            // Arrange
+            var game = new Game
+            {
+                Description = "Sudoku - Numbers must increase along the line of the 'thermometer'",
+                FileName = "SudokuThermometer.txt",
+                SubGridSize = new Tuple<int, int>(3, 3)
+            };
+
+            //Act
+            var result = GameProcessor.Process(game);
+
+            // Assert
+            var actualSolution = new Map(result, game.IsDebug);
+            var expectedSolution = LoadSolution(game);
+            expectedSolution.ValidateSolution(actualSolution.Grid, game.IsDebug);
+            Assert.That(result.First(), Is.EqualTo("278564139"));
+        }
+        private Map LoadSolution(Game game)
+        {
+            string filePath = $"Solutions\\{game.FileName}";
+            string[] lines = File.ReadAllLines(filePath);
+            return new Map(lines, false);
+
         }
     }
 }

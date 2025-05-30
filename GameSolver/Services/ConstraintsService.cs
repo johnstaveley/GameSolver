@@ -91,6 +91,38 @@ namespace GameSolver.Services
                             Constraints.Add(new Constraint(leftX8, leftY8, rightX8-1, rightY8, ConstraintType.GreaterThan));
                             Constraints.Add(new Constraint(leftX8, leftY8, rightX8, rightY8-1, ConstraintType.GreaterThan));
                             break;
+                        case "E":
+                            // Top left are greater than the target cell
+                            var leftX5A = (x - 1) / 2;
+                            var leftY5A = (y - 1) / 2;
+                            var rightX5A = (x + 1) / 2;
+                            var rightY5A = (y + 1) / 2;
+                            Constraints.Add(new Constraint(leftX5A, leftY5A, rightX5A, rightY5A, ConstraintType.GreaterThan));
+                            break;
+                        case "F":
+                            // Top right are greater than the target cell
+                            var leftX6A = (x - 1) / 2;
+                            var leftY6A = (y + 1) / 2;
+                            var rightX6A = (x + 1) / 2;
+                            var rightY6A = (y - 1) / 2;
+                            Constraints.Add(new Constraint(leftX6A, leftY6A, rightX6A, rightY6A, ConstraintType.LessThan));
+                            break;
+                        case "G":
+                            // Bottom left are greater than the target cell
+                            var leftX7A = (x - 1) / 2;
+                            var leftY7A = (y + 1) / 2;
+                            var rightX7A = (x + 1) / 2;
+                            var rightY7A = (y - 1) / 2;
+                            Constraints.Add(new Constraint(leftX7A, leftY7A, rightX7A, rightY7A, ConstraintType.GreaterThan));
+                            break;
+                        case "H":
+                            // Bottom right are greater than the target cell
+                            var leftX8A = (x - 1) / 2;
+                            var leftY8A = (y - 1) / 2;
+                            var rightX8A = (x + 1) / 2;
+                            var rightY8A = (y + 1) / 2;
+                            Constraints.Add(new Constraint(leftX8A, leftY8A, rightX8A, rightY8A, ConstraintType.LessThan));
+                            break;
                         case "x":
                             // Cells add up to 10
                             Constraints.Add(GetConstraintFromPosition(x, y, ConstraintType.EqualTo10));
@@ -99,8 +131,20 @@ namespace GameSolver.Services
                             // Cells add up to 5
                             Constraints.Add(GetConstraintFromPosition(x, y, ConstraintType.EqualTo5));
                             break;
-                        default:
+                        case " ":
+                        case "0":
+                        case "1":
+                        case "2":
+                        case "3":
+                        case "4":
+                        case "5":
+                        case "6":
+                        case "7":
+                        case "8":
+                        case "9":
                             break;
+                        default:
+                            throw new Exception($"Unknown constraint character '{value}' at position ({x}, {y})");
                     }
                 }
             }

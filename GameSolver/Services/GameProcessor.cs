@@ -33,12 +33,15 @@ namespace GameSolver.Services
             Solution.PrintSolution(solution);
             map.ValidateSolution(solution, game.IsDebug);
             var outputLines = new List<string>();
-            var outputLine = "";
-            for (int i = 0; i < solution.GetLength(1); i++)
-            {
-                outputLine += solution[i, 0].ToString();
-            }
-            outputLines.Add(outputLine);
+            for (int j = 0; j < solution.GetLength(0); j++)
+                {
+                var outputLine = "";
+                for (int i = 0; i < solution.GetLength(1); i++)
+                    {
+                    outputLine += solution[i, j].ToString();
+                    }
+                    outputLines.Add(outputLine);
+                }
             return outputLines.ToArray();
         }
     }
