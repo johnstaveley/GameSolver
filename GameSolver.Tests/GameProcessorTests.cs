@@ -1,6 +1,5 @@
 ﻿using GameSolver.Models;
 using GameSolver.Services;
-using System.Text.RegularExpressions;
 
 namespace GameSolver.Tests
 {
@@ -13,6 +12,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Futoshiki Basic - 6x6 grid with minimal inequality constraints",
                 FileName = "FutoshikiBasic.txt",
                 MaxValue = 6
             };
@@ -29,6 +29,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Futoshiki Full - 6x6 grid with full inequality constraints",
                 FileName = "FutoshikiFull.txt",
                 MaxValue = 6
             };
@@ -46,6 +47,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku with inequality constraints 1",
                 FileName = "SudokuInequality1.txt",
                 MaxValue = 6,
                 SubGridSize = new Tuple<int, int>(2, 3)
@@ -63,6 +65,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku with inequality constraints 1",
                 FileName = "SudokuInequality2.txt",
                 MaxValue = 6,
                 SubGridSize = new Tuple<int, int>(2, 3)
@@ -80,7 +83,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
-                Description = "Sudoku Easy - 3x3 subgrid",
+                Description = "Sudoku Easy Level",
                 FileName = "SudokuEasy.txt",
                 SubGridSize = new Tuple<int, int>(3, 3)
             };
@@ -97,6 +100,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku Master Level",
                 FileName = "SudokuMaster.txt",
                 SubGridSize = new Tuple<int, int>(3, 3)
             };
@@ -113,7 +117,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
-                Description = "Sudoku Extreme - 3x3 subgrid",
+                Description = "Sudoku Extreme",
                 FileName = "SudokuExtreme.txt",
                 SubGridSize = new Tuple<int, int>(3, 3)
             };
@@ -130,6 +134,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku with indicators that each of the 3 cells at corners are less than the central cell A = Top left, B = Top Right, C = Bottom Left, D = Bottom Right",
                 FileName = "SudokuQuadMax66.txt",
                 MaxValue = 6,
                 SubGridSize = new Tuple<int, int>(2, 3)
@@ -147,6 +152,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
+                Description = "Sudoku with indicators that each of the 3 cells at corners are less than the central cell A = Top left, B = Top Right, C = Bottom Left, D = Bottom Right",
                 FileName = "SudokuQuadMax99.txt",
                 SubGridSize = new Tuple<int, int>(3, 3)
             };
@@ -163,7 +169,7 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
-                Description = "Sudoku - Adjacent squares either must add up to 10 or 5 or must not",
+                Description = "Sudoku - Adjacent squares either must add up to 10 or 5 (see grid) or otherwise must not.",
                 FileName = "SudokuXV.txt",
                 SubGridSize = new Tuple<int, int>(3, 3),
                 ProhibitXV = true
