@@ -237,6 +237,9 @@ namespace GameSolver.Tests
             expectedSolution.ValidateSolution(actualSolution.Grid, game.IsDebug);
             Assert.That(result.First(), Is.EqualTo("278564139"));
         }
+        /// <summary>
+        /// Taken from https://www.funwithpuzzles.com/2010/05/snake-sudoku-ss1.html
+        /// </summary>
         [Test]
         public void SudokuSnake1()
         {

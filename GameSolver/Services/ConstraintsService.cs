@@ -134,6 +134,7 @@ namespace GameSolver.Services
                         case "c":
                             // Cells must be consecutive
                             Constraints.Add(GetConstraintFromPosition(x, y, ConstraintType.Consecutive));
+                            // ToDO: for diagonal constraint, we need to get the direction
                             break;
                         case " ":
                         case "0":
