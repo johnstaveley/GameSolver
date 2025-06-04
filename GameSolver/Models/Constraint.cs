@@ -24,6 +24,7 @@
         GreaterThan,
         LessThan,
         EqualTo10,
-        EqualTo5
+        EqualTo5,
+        Consecutive
     }
 }

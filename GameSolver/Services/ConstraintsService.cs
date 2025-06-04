@@ -131,6 +131,10 @@ namespace GameSolver.Services
                             // Cells add up to 5
                             Constraints.Add(GetConstraintFromPosition(x, y, ConstraintType.EqualTo5));
                             break;
+                        case "c":
+                            // Cells must be consecutive
+                            Constraints.Add(GetConstraintFromPosition(x, y, ConstraintType.Consecutive));
+                            break;
                         case " ":
                         case "0":
                         case "1":

@@ -120,6 +120,34 @@ namespace GameSolver.Services
                     case ConstraintType.EqualTo10:
                         model.Add(model.Cells[constraint.LeftY, constraint.LeftX] + model.Cells[constraint.RightY, constraint.RightX] == 10);
                         break;
+                    case ConstraintType.Consecutive:
+                        // For a path of consecutive numbers, we need to ensure:
+                        // 1. The difference between adjacent cells is exactly 1
+                        // 2. The direction (increasing or decreasing) is consistent
+                        var diff = model.NewIntVar(-1, 1, $"diff_{constraint.LeftX}_{constraint.LeftY}_{constraint.RightX}_{constraint.RightY}");
+                        model.Add(model.Cells[constraint.RightY, constraint.RightX] - model.Cells[constraint.LeftY, constraint.LeftX] == diff);
+                        
+                        // Find all constraints that form a path with this one
+                        var pathConstraints = _constraints.Constraints
+                            .Where(c => c.Type == ConstraintType.Consecutive)
+                            .Where(c => (c.LeftX == constraint.LeftX && c.LeftY == constraint.LeftY) || 
+                                      (c.RightX == constraint.LeftX && c.RightY == constraint.LeftY) ||
+                                      (c.LeftX == constraint.RightX && c.LeftY == constraint.RightY) ||
+                                      (c.RightX == constraint.RightX && c.RightY == constraint.RightY))
+                            .ToList();
+
+                        // For each connected constraint in the path, ensure they use the same direction
+                        foreach (var connectedConstraint in pathConstraints)
+                        {
+                            if (connectedConstraint != constraint)
+                            {
+                                var connectedDiff = model.NewIntVar(-1, 1, $"diff_{connectedConstraint.LeftX}_{connectedConstraint.LeftY}_{connectedConstraint.RightX}_{connectedConstraint.RightY}");
+                                model.Add(model.Cells[connectedConstraint.RightY, connectedConstraint.RightX] - 
+                                        model.Cells[connectedConstraint.LeftY, connectedConstraint.LeftX] == connectedDiff);
+                                model.Add(connectedDiff == diff); // Ensure same direction
+                            }
+                        }
+                        break;
                 }
             }
             if (_game.SubGridSize != null)

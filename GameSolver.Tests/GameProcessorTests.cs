@@ -237,6 +237,26 @@ namespace GameSolver.Tests
             expectedSolution.ValidateSolution(actualSolution.Grid, game.IsDebug);
             Assert.That(result.First(), Is.EqualTo("278564139"));
         }
+        [Test]
+        public void SudokuSnake1()
+        {
+            // Arrange
+            var game = new Game
+            {
+                Description = "Sudoku - Numbers must increase along the line of the 'snake' - can be in either direction",
+                FileName = "SudokuSnake1.txt",
+                SubGridSize = new Tuple<int, int>(3, 3)
+            };
+
+            //Act
+            var result = GameProcessor.Process(game);
+
+            // Assert
+            var actualSolution = new Map(result, game.IsDebug);
+            var expectedSolution = LoadSolution(game);
+            expectedSolution.ValidateSolution(actualSolution.Grid, game.IsDebug);
+        }
+
         private Map LoadSolution(Game game)
         {
             string filePath = $"Solutions\\{game.FileName}";
