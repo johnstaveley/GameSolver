@@ -3,7 +3,7 @@ using GameSolver.Services;
 
 namespace GameSolver.Tests
 {
-    // Puzzles taken from the British Army challenge book 2019
+    // Puzzles mostly taken from the British Army challenge book 2019
     public class GameProcessorTests
     {
         [Test]
@@ -248,7 +248,8 @@ namespace GameSolver.Tests
             {
                 Description = "Sudoku - Numbers must increase along the line of the 'snake' - can be in either direction",
                 FileName = "SudokuSnake1.txt",
-                SubGridSize = new Tuple<int, int>(3, 3)
+                SubGridSize = new Tuple<int, int>(3, 3),
+                IsDebug = true
             };
 
             //Act

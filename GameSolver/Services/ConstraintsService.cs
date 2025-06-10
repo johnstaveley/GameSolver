@@ -131,10 +131,22 @@ namespace GameSolver.Services
                             // Cells add up to 5
                             Constraints.Add(GetConstraintFromPosition(x, y, ConstraintType.EqualTo5));
                             break;
-                        case "c":
-                            // Cells must be consecutive
-                            Constraints.Add(GetConstraintFromPosition(x, y, ConstraintType.Consecutive));
-                            // ToDO: for diagonal constraint, we need to get the direction
+                        case "+":
+                            Constraints.Add(GetConstraintFromPosition(x, y, ConstraintType.Snake));
+                            break;
+                        case "/":
+                            var leftX10 = (x - 1) / 2;
+                            var leftY10 = (y + 1) / 2;
+                            var rightX10 = (x + 1) / 2;
+                            var rightY10 = (y - 1) / 2;
+                            Constraints.Add(new Constraint(leftX10, leftY10, rightX10, rightY10, ConstraintType.SnakeDiagonalNE));
+                            break;
+                        case @"\":
+                            var leftX9 = (x - 1) / 2;
+                            var leftY9 = (y - 1) / 2;
+                            var rightX9 = (x + 1) / 2;
+                            var rightY9 = (y + 1) / 2;
+                            Constraints.Add(new Constraint(leftX9, leftY9, rightX9, rightY9, ConstraintType.SnakeDiagonalNW));
                             break;
                         case " ":
                         case "0":
@@ -147,11 +159,37 @@ namespace GameSolver.Services
                         case "7":
                         case "8":
                         case "9":
+                            // There is no constraint for this cell
                             break;
                         default:
                             throw new Exception($"Unknown constraint character '{value}' at position ({x}, {y})");
                     }
                 }
+            }
+            // TODO: Count the number of unique snake constraints
+            var snakePathConstraints = Constraints.Where(c => c.Type == ConstraintType.Snake || c.Type == ConstraintType.SnakeDiagonalNE ||
+                c.Type == ConstraintType.SnakeDiagonalNW).ToList();
+            var snakeCount = 0;
+            foreach (var snakeConstraint in snakePathConstraints)
+            {
+                var leftX = snakeConstraint.LeftX;
+                var leftY = snakeConstraint.LeftY;
+                var rightX = snakeConstraint.RightX;
+                var rightY = snakeConstraint.RightY;
+                // Add diagonal constraints if they are not already present
+                if (!Constraints.Any(c => c.LeftX == leftX && c.LeftY == leftY && c.RightX == rightX && c.RightY == rightY &&
+                                          (c.Type == ConstraintType.SnakeDiagonalNE || c.Type == ConstraintType.SnakeDiagonalNW)))
+                {
+                    //Constraints.Add(new Constraint(leftX, leftY, rightX, rightY, ConstraintType.SnakeDiagonalNE));
+                    //Constraints.Add(new Constraint(leftX, leftY, rightX, rightY, ConstraintType.SnakeDiagonalNW));
+                    snakeCount++;
+                    // Remove constraint
+                    snakePathConstraints.Remove(snakeConstraint);
+                }
+            }
+            if (isDebug)
+            {
+                Console.WriteLine($"Found {snakeCount} snakes");
             }
             if (isDebug)
             {

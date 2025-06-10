@@ -120,7 +120,9 @@ namespace GameSolver.Services
                     case ConstraintType.EqualTo10:
                         model.Add(model.Cells[constraint.LeftY, constraint.LeftX] + model.Cells[constraint.RightY, constraint.RightX] == 10);
                         break;
-                    case ConstraintType.Consecutive:
+                    case ConstraintType.Snake:
+                    case ConstraintType.SnakeDiagonalNW:
+                    case ConstraintType.SnakeDiagonalNE:
                         // For a path of consecutive numbers, we need to ensure:
                         // 1. The difference between adjacent cells is exactly 1
                         // 2. The direction (increasing or decreasing) is consistent
@@ -129,7 +131,7 @@ namespace GameSolver.Services
                         
                         // Find all constraints that form a path with this one
                         var pathConstraints = _constraints.Constraints
-                            .Where(c => c.Type == ConstraintType.Consecutive)
+                            .Where(c => c.Type == ConstraintType.Snake)
                             .Where(c => (c.LeftX == constraint.LeftX && c.LeftY == constraint.LeftY) || 
                                       (c.RightX == constraint.LeftX && c.RightY == constraint.LeftY) ||
                                       (c.LeftX == constraint.RightX && c.LeftY == constraint.RightY) ||
