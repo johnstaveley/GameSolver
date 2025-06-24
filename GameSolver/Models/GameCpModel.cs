@@ -16,5 +16,6 @@ namespace GameSolver.Models
         /// The initial values and solution
         /// </summary>
         public IntVar[,] Cells { get; set; } = new IntVar[0, 0];
+        public BoolVar[] Snakes { get; set; } = [];
     }
 }

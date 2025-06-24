@@ -29,15 +29,20 @@ namespace GameSolver.Models
             {
                 throw new ArgumentException("Solution grid size does not match the original grid size.");
             }
+            var isPassed = true;
             for (int y = 0; y < Grid.GetLength(1); y++)
             {
                 for (int x = 0; x < Grid.GetLength(0); x++)
                 {
                     if (Grid[x, y] != null && solution[x, y] != Grid[x, y])
                     {
-                        throw new InvalidOperationException($"Validation failed at position ({x}, {y}): expected {Grid[x, y]}, got {solution[x, y]}");
+                        isPassed = false;
                     }
                 }
+            }
+            if (!isPassed)
+            {
+                throw new InvalidOperationException("Solution does not match the initial values.");
             }
             if (isDebug)
             {

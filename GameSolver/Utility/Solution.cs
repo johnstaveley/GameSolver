@@ -9,6 +9,7 @@
                 Console.WriteLine("No solution found.");
                 return;
             }
+            Console.WriteLine("Solution found:");
             for (int j = 0; j < solution.GetLength(1); j++)
             {
                 for (int i = 0; i < solution.GetLength(0); i++)

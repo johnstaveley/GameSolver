@@ -2,15 +2,18 @@
 
 namespace GameSolver.Services
 {
+
+    /// <summary>
+    /// Service for understanding a grid of commands and converting them to constraints
+    /// </summary>
     public class ConstraintsService
     {
-        public List<Constraint> Constraints { get; set; }
+        public List<Constraint> Constraints { get; set; } = [];
 
-        public ConstraintsService(string[] lines, bool isDebug)
+        public ConstraintsService(string[] lines, Game game)
         {
             var rows = lines.Length;
             var cols = lines.Length;
-            Constraints = new List<Constraint>();
             for (int y = 0; y < rows; y++)
             {
                 char[] elements = lines[y].ToCharArray();
@@ -149,9 +152,9 @@ namespace GameSolver.Services
                     }
                 }
             }
-            if (isDebug)
+            if (game.IsDebug)
             {
-                Console.WriteLine($"Found {Constraints.Count} constraints");
+                Console.WriteLine($"Found {Constraints.Count} constraints in definition grid.");
                 foreach (var constraint in Constraints)
                 {
                     Console.WriteLine(constraint.ToString());

@@ -1,6 +1,10 @@
 ﻿using GameSolver.Exceptions;
 using GameSolver.Models;
 using Google.OrTools.Sat;
+using System.Numerics;
+using System.Runtime.ConstrainedExecution;
+using System.Runtime.Intrinsics.X86;
+using System;
 
 namespace GameSolver.Services
 {
@@ -8,14 +12,14 @@ namespace GameSolver.Services
     {
         private readonly Map _map;
         private readonly Game _game;
-        private readonly ConstraintsService _constraints;
+        private readonly ConstraintsService _constraintService;
         private int _numberOfRows;
         private int _numberOfColumns;
-        public GameSolverService(Map map, ConstraintsService constraints, Game game)
+        public GameSolverService(Map map, ConstraintsService constraintsService, Game game)
         {
             _map = map;
             _game = game;
-            _constraints = constraints;
+            _constraintService = constraintsService;
             _numberOfRows = _map.Grid.GetLength(0);
             _numberOfColumns = _map.Grid.GetLength(1);
         }
@@ -76,7 +80,7 @@ namespace GameSolver.Services
                 }
             }
             if (_game.ProhibitXV) {
-                var equalityConstraints = _constraints.Constraints
+                var equalityConstraints = _constraintService.Constraints
                     .Where(c => c.Type == ConstraintType.EqualTo5 || c.Type == ConstraintType.EqualTo10)
                     .ToList();
                 for (var columnIndex = 0; columnIndex < _numberOfColumns - 1; columnIndex++)
@@ -104,7 +108,36 @@ namespace GameSolver.Services
                     }
                 }
             }
-            foreach (var constraint in _constraints.Constraints)
+            // For each complete "ascending/descending sequence", you need to create a new Boolean variable x that will control whether the sequence is ascending (if true)
+            // or descending(if false).Make your "ascending" constraints and use the "only enforce if" function on each one, passing in that new Boolean variable so that
+            // x => (a < b); x => (b < c); etc..Then, make your "descending" constraints the same way, except pass in the negation of that same Boolean variable using the
+            // "not" function and flip the comparisons so that!x => (a > b); !x => (b > c); etc..Now, either your ascending constraints are "active" or your descending
+            // constraint are "active". The function names are different depending on the language you are using; check the documentation for specifics. You must use a
+            // new Boolean variable for each "sequence" that you want consistent, and you must use the same Boolean variable for each constraint in that "sequence".
+            var snakeId = 0;
+            model.Snakes = new BoolVar[_game.Snakes.Count];
+            foreach (var snake in _game.Snakes)
+                {
+                model.Snakes[snakeId] = model.NewBoolVar($"snake_{snakeId}");
+                foreach (var constraint in snake)
+                    {
+                    switch (constraint.Type)
+                    {
+                        case ConstraintType.Snake:
+                            // Snake constraints are always ascending
+                            model.Add(model.Cells[constraint.LeftY, constraint.LeftX] < model.Cells[constraint.RightY, constraint.RightX])
+                                .OnlyEnforceIf(model.Snakes[snakeId].Not());
+                            // Snake constraints are always descending
+                            model.Add(model.Cells[constraint.LeftY, constraint.LeftX] > model.Cells[constraint.RightY, constraint.RightX])
+                                .OnlyEnforceIf(model.Snakes[snakeId]);
+                            break;
+                        default:
+                            throw new ArgumentException($"Unknown snake constraint type: {constraint.Type}");
+                    }
+                }
+                snakeId++;
+            }
+            foreach (var constraint in _constraintService.Constraints)
             {
                 switch (constraint.Type)
                 {
@@ -119,34 +152,6 @@ namespace GameSolver.Services
                         break;
                     case ConstraintType.EqualTo10:
                         model.Add(model.Cells[constraint.LeftY, constraint.LeftX] + model.Cells[constraint.RightY, constraint.RightX] == 10);
-                        break;
-                    case ConstraintType.Snake:
-                        // For a path of consecutive numbers, we need to ensure:
-                        // 1. The difference between adjacent cells is exactly 1
-                        // 2. The direction (increasing or decreasing) is consistent
-                        var diff = model.NewIntVar(-1, 1, $"diff_{constraint.LeftX}_{constraint.LeftY}_{constraint.RightX}_{constraint.RightY}");
-                        model.Add(model.Cells[constraint.RightY, constraint.RightX] - model.Cells[constraint.LeftY, constraint.LeftX] == diff);
-                        
-                        // Find all constraints that form a path with this one
-                        var pathConstraints = _constraints.Constraints
-                            .Where(c => c.Type == ConstraintType.Snake)
-                            .Where(c => (c.LeftX == constraint.LeftX && c.LeftY == constraint.LeftY) || 
-                                      (c.RightX == constraint.LeftX && c.RightY == constraint.LeftY) ||
-                                      (c.LeftX == constraint.RightX && c.LeftY == constraint.RightY) ||
-                                      (c.RightX == constraint.RightX && c.RightY == constraint.RightY))
-                            .ToList();
-
-                        // For each connected constraint in the path, ensure they use the same direction
-                        foreach (var connectedConstraint in pathConstraints)
-                        {
-                            if (connectedConstraint != constraint)
-                            {
-                                var connectedDiff = model.NewIntVar(-1, 1, $"diff_{connectedConstraint.LeftX}_{connectedConstraint.LeftY}_{connectedConstraint.RightX}_{connectedConstraint.RightY}");
-                                model.Add(model.Cells[connectedConstraint.RightY, connectedConstraint.RightX] - 
-                                        model.Cells[connectedConstraint.LeftY, connectedConstraint.LeftX] == connectedDiff);
-                                model.Add(connectedDiff == diff); // Ensure same direction
-                            }
-                        }
                         break;
                 }
             }

@@ -26,7 +26,7 @@ namespace GameSolver.Services
             {
                 map.Display();
             }
-            var constraints = new ConstraintsService(lines, game.IsDebug);
+            var constraints = new ConstraintsService(lines, game);
             var solver = new GameSolverService(map, constraints, game);
 
             var solution = solver.Solve();
