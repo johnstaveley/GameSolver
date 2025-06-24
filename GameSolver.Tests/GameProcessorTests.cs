@@ -253,20 +253,21 @@ namespace GameSolver.Tests
                 IsDebug = true,
                 Snakes = [
                     [
+                        new Constraint(5, 1, 6, 1, ConstraintType.Snake),
+                        new Constraint(6, 1, 6, 0, ConstraintType.Snake),
                         new Constraint(6, 0, 7, 0, ConstraintType.Snake),
-                        new Constraint(6, 0, 6, 1, ConstraintType.Snake),
-                        new Constraint(5, 1, 6, 1, ConstraintType.Snake)
+                        
                     ],[
-                        new Constraint(8, 3, 8, 4, ConstraintType.Snake),
+                        new Constraint(6, 4, 7, 4, ConstraintType.Snake),
                         new Constraint(7, 4, 8, 4, ConstraintType.Snake),
-                        new Constraint(6, 4, 7, 4, ConstraintType.Snake)
+                        new Constraint(8, 4, 8, 3, ConstraintType.Snake)
                     ],[
                         new Constraint(3, 5, 4, 5, ConstraintType.Snake),
-                        new Constraint(3, 6, 4, 5, ConstraintType.Snake),
+                        new Constraint(4, 5, 3, 6, ConstraintType.Snake),
                         new Constraint(3, 6, 3, 7, ConstraintType.Snake)
                     ],[
                         new Constraint(1, 6, 2, 6, ConstraintType.Snake),
-                        new Constraint(1, 7, 2, 6, ConstraintType.Snake)
+                        new Constraint(2, 6, 1, 7, ConstraintType.Snake)
                     ],[
                         new Constraint(7, 6, 8, 7, ConstraintType.Snake),
                         new Constraint(8, 7, 8, 8, ConstraintType.Snake)
