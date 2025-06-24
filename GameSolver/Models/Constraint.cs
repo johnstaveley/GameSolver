@@ -25,8 +25,6 @@
         LessThan,
         EqualTo10,
         EqualTo5,
-        Snake,
-        SnakeDiagonalNE,
-        SnakeDiagonalNW
+        Snake
     }
 }

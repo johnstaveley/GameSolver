@@ -1,5 +1,6 @@
 ﻿using GameSolver.Models;
 using GameSolver.Services;
+using System.Xml.Linq;
 
 namespace GameSolver.Tests
 {
@@ -246,10 +247,31 @@ namespace GameSolver.Tests
             // Arrange
             var game = new Game
             {
-                Description = "Sudoku - Numbers must increase along the line of the 'snake' - can be in either direction",
+                Description = "SNake Sudoku - Numbers must increase along the line of the 'snake' - can be in either direction",
                 FileName = "SudokuSnake1.txt",
                 SubGridSize = new Tuple<int, int>(3, 3),
-                IsDebug = true
+                IsDebug = true,
+                Snakes = [
+                    [
+                        new Constraint(6, 0, 7, 0, ConstraintType.Snake),
+                        new Constraint(6, 0, 6, 1, ConstraintType.Snake),
+                        new Constraint(5, 1, 6, 1, ConstraintType.Snake)
+                    ],[
+                        new Constraint(8, 3, 8, 4, ConstraintType.Snake),
+                        new Constraint(7, 4, 8, 4, ConstraintType.Snake),
+                        new Constraint(6, 4, 7, 4, ConstraintType.Snake)
+                    ],[
+                        new Constraint(3, 5, 4, 5, ConstraintType.Snake),
+                        new Constraint(3, 6, 4, 5, ConstraintType.Snake),
+                        new Constraint(3, 6, 3, 7, ConstraintType.Snake)
+                    ],[
+                        new Constraint(1, 6, 2, 6, ConstraintType.Snake),
+                        new Constraint(1, 7, 2, 6, ConstraintType.Snake)
+                    ],[
+                        new Constraint(7, 6, 8, 7, ConstraintType.Snake),
+                        new Constraint(8, 7, 8, 8, ConstraintType.Snake)
+                    ]
+                ]
             };
 
             //Act

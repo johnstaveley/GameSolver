@@ -24,5 +24,10 @@
         /// </summary>
         public bool ProhibitXV { get; set; } = false;
         public string Description { get; set; } = "No description provided";
+
+        /// <summary>
+        /// Hand coded constraints
+        /// </summary>
+        public List<List<Constraint>> Snakes { get; set; } = new List<List<Constraint>>();
     }
 }

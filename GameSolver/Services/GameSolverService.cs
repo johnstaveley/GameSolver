@@ -121,8 +121,6 @@ namespace GameSolver.Services
                         model.Add(model.Cells[constraint.LeftY, constraint.LeftX] + model.Cells[constraint.RightY, constraint.RightX] == 10);
                         break;
                     case ConstraintType.Snake:
-                    case ConstraintType.SnakeDiagonalNW:
-                    case ConstraintType.SnakeDiagonalNE:
                         // For a path of consecutive numbers, we need to ensure:
                         // 1. The difference between adjacent cells is exactly 1
                         // 2. The direction (increasing or decreasing) is consistent
